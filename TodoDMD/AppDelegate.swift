@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CoreData
+
 import RealmSwift
 
 
@@ -20,12 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        print(Realm.Configuration.defaultConfiguration.fileURL)
+        // print(Realm.Configuration.defaultConfiguration.fileURL)
         
     
         
         do {
-            let realm = try Realm()
+            _ = try Realm()
             
         } catch {
             print("Error initialising new Realm, \(error)")
@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-  
+  /*
     func applicationWillTerminate(_ application: UIApplication) {
         
         self.saveContext()
@@ -69,6 +69,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
+    */
 }
 

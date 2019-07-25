@@ -6,4 +6,6 @@ target 'TodoDMD' do
 
   # Pods for TodoDMD
 pod 'RealmSwift'
+pod 'SwipeCellKit'
+
 end
