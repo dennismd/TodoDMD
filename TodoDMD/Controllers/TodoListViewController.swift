@@ -17,6 +17,7 @@ class TodoListViewController: SwipeTableViewController {
     
     let realm = try! Realm()
     
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var selectedCategory : Category? {
         didSet{
@@ -34,8 +35,7 @@ class TodoListViewController: SwipeTableViewController {
         super.viewDidLoad()
         
         tableView.separatorStyle = .none
-
-       
+        
         /*
         let newItem = Item()
         newItem.title = "First Item"
@@ -57,6 +57,41 @@ class TodoListViewController: SwipeTableViewController {
        //    itemArray = items
        // }
         
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+             title = selectedCategory?.name
+        
+        guard let colourHex = selectedCategory?.colour else { fatalError() }
+            
+        
+            updateNavBar(withHexCode: colourHex)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        updateNavBar(withHexCode: "1D9BF6")
+        
+    }
+    
+    //MARK: - Nav Bar Setup Methods
+    
+    func updateNavBar(withHexCode colourHexCode : String) {
+        
+        guard let navBar = navigationController?.navigationBar else { fatalError("Navigation controller does not exist")
+        }
+        
+        guard let navBarColour = UIColor(hexString: colourHexCode) else { fatalError()}
+        
+        navBar.barTintColor = navBarColour
+        
+        navBar.tintColor = ContrastColorOf(navBarColour, returnFlat: true)
+        
+        navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : ContrastColorOf(navBarColour, returnFlat: true)]
+        
+        searchBar.barTintColor = navBarColour
         
     }
 
@@ -84,6 +119,9 @@ class TodoListViewController: SwipeTableViewController {
          // cell.backgroundColor = FlatSkyBlue().darken(byPercentage: <#T##CGFloat#>)
         
         cell.accessoryType = item.done ? .checkmark : .none
+            
+            cell.tintColor = ContrastColorOf(cell.backgroundColor!, returnFlat: true)
+            
         
         } else {
             cell.textLabel?.text = "No items Added"
@@ -209,6 +247,7 @@ extension TodoListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         todoItems = todoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
         tableView.reloadData()
+        searchBar.resignFirstResponder()
     }
     
     
